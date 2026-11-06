@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="IMROVICH UI Kit — Glassmorphism компоненты, 12 тем, ноль зависимостей">
+<title>IMROVICH UI Kit — Glassmorphism components</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&family=Unbounded:wght@500;700&display=swap">
+<link rel="stylesheet" href="ui-kit.css">
+<style>
+/* Стили только для страницы документации (не входят в сам кит) */
+.site-header{padding:14px 0 0;position:sticky;top:14px;z-index:50}
+.header-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:12px 20px;border-radius:var(--r-lg);background:var(--glass-bg-strong);
+  border:1.5px solid var(--glass-border);backdrop-filter:blur(20px);
+  box-shadow:var(--glass-shadow);flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand-mark{width:30px;height:30px;transition:transform .5s}
+.brand:hover .brand-mark{transform:rotate(-8deg)}
+.brand-text{font-family:var(--font-display);font-size:1rem}
+.brand-suffix{color:var(--gold);margin-left:3px}
+.badge-version{font-size:.7rem;padding:2px 8px;border-radius:999px;
+  background:rgba(var(--accent-rgb),.15);border:1px solid rgba(var(--accent-rgb),.4);
+  color:var(--gold);font-weight:700;margin-left:8px}
+.top-nav{display:flex;gap:2px;padding:4px;border-radius:999px;background:rgba(0,0,0,.24);
+  border:1px solid rgba(255,255,255,.06);flex-wrap:wrap}
+.top-nav-link{color:var(--text-dim);font-size:.82rem;font-weight:700;
+  padding:8px 14px;border-radius:999px;text-decoration:none;transition:all .25s}
+.top-nav-link:hover{color:var(--text)}
+.hero{text-align:center;padding:56px 0 32px;animation:slideUp .6s both}
+.eyebrow{display:inline-block;font-size:.8rem;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.hero h1{font-family:var(--font-display);font-size:clamp(2rem,5vw,3rem);
+  font-weight:700;line-height:1.2;margin:0 0 16px}
+.hero-sub{color:var(--text-dim);max-width:640px;margin:0 auto 26px;font-size:1.05rem}
+.hero-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.section{padding:48px 0 12px}
+.section-head{margin-bottom:24px}
+.section-kicker{font-size:.72rem;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--gold);margin:0 0 4px}
+.section-title{font-family:var(--font-display);font-size:clamp(1.4rem,3vw,1.8rem);margin:0 0 6px}
+.section-sub{color:var(--text-dim);margin:0;font-size:.92rem}
+.comp-grid{display:grid;gap:16px}
+.comp-card{padding:22px;border-radius:var(--r-md);background:var(--glass-bg-soft);
+  border:1px solid var(--glass-border);transition:border-color .3s}
+.comp-card:hover{border-color:var(--glass-border-strong)}
+.comp-title{font-weight:700;font-size:.92rem;margin:0 0 14px;display:flex;align-items:center;gap:8px}
+.comp-title .dot{width:6px;height:6px;border-radius:50%;background:var(--gold)}
+.comp-preview{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:14px;
+  border-radius:var(--r-sm);background:rgba(0,0,0,.2);
+  border:1px dashed rgba(var(--accent-rgb),.15);margin-bottom:14px;min-height:60px}
+.comp-preview.col{flex-direction:column;align-items:stretch}
+.comp-code-toggle{font-size:.78rem;font-weight:700;background:none;border:none;
+  color:var(--text-faint);cursor:pointer;font-family:inherit;padding:4px 0;
+  transition:color .2s;display:flex;align-items:center;gap:6px}
+.comp-code-toggle:hover{color:var(--gold)}
+.comp-code-toggle::after{content:'▼';font-size:.6rem;transition:transform .2s}
+.comp-code-toggle.open::after{transform:rotate(180deg)}
+.code-wrap{display:none;position:relative;margin-top:10px}
+.code-wrap.open{display:block}
+.code-wrap pre{margin:0;padding:14px 16px;border-radius:var(--r-sm);background:rgba(0,0,0,.45);
+  border:1px solid rgba(255,255,255,.05);overflow-x:auto;font-size:.78rem;
+  line-height:1.6;max-height:280px}
+.code-wrap code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  color:var(--text-dim);white-space:pre}
+.copy-code-btn{position:absolute;top:8px;right:8px;padding:5px 12px;border-radius:999px;
+  background:rgba(var(--accent-rgb),.15);border:1px solid rgba(var(--accent-rgb),.4);
+  color:var(--gold);font-size:.72rem;font-weight:700;cursor:pointer;
+  font-family:inherit;transition:all .2s;z-index:2}
+.copy-code-btn:hover{background:rgba(var(--accent-rgb),.25);transform:translateY(-1px)}
+.copy-code-btn.copied{background:rgba(127,199,127,.2);
+  border-color:rgba(127,199,127,.5);color:#c8e6c8}
+.color-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+.color-swatch{height:80px;border-radius:var(--r-sm);display:flex;align-items:flex-end;
+  padding:10px;font-size:.72rem;font-weight:700;color:#fff;
+  text-shadow:0 1px 3px rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.1)}
+.color-swatch small{display:block;font-size:.65rem;opacity:.85;font-weight:500}
+.sw-gold{background:linear-gradient(135deg,#FFD24A,#E0A800)}
+.sw-amber{background:linear-gradient(135deg,#E0A800,#8B6914)}
+.sw-text{background:#FFF7E0;color:#1a1206;text-shadow:none}
+.sw-dim{background:#D9C79A;color:#1a1206;text-shadow:none}
+.sw-faint{background:#8A7A55}
+.sw-danger{background:#E0684F}
+.sw-ok{background:#7FC77F;color:#1a1206;text-shadow:none}
+.sw-bg{background:linear-gradient(135deg,#2a1e08,#0a0703)}
+.site-footer{padding:40px 0 60px;border-top:1px solid rgba(255,255,255,.05);
+  margin-top:60px;text-align:center}
+.site-footer p{color:var(--text-faint);font-size:.85rem;margin:0}
+@media(max-width:760px){
+  .header-inner{flex-direction:column;align-items:stretch}
+  .brand{justify-content:center}
+  .top-nav{overflow-x:auto;justify-content:flex-start}
+}
+</style>
+</head>
+<body>
+<div class="bg-scene" aria-hidden="true"></div>
+<div class="fireflies" aria-hidden="true">
+  <span class="firefly-wrap f1"><span class="firefly"></span></span>
+  <span class="firefly-wrap f2"><span class="firefly"></span></span>
+  <span class="firefly-wrap f3"><span class="firefly"></span></span>
+  <span class="firefly-wrap f4"><span class="firefly"></span></span>
+  <span class="firefly-wrap f5"><span class="firefly"></span></span>
+</div>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="#top">
+      <svg class="brand-mark" width="30" height="30" viewBox="0 0 32 32">
+        <defs><linearGradient id="bm" x1="3" y1="3" x2="29" y2="29">
+          <stop stop-color="#E0A800"/><stop offset="1" stop-color="#FFD24A"/>
+        </linearGradient></defs>
+        <rect x="3" y="3" width="26" height="26" rx="7" fill="url(#bm)"/>
+        <path d="M10 12h12M10 16h12M10 20h8" stroke="#1a1206" stroke-width="2.2" stroke-linecap="round"/>
+      </svg>
+      <span class="brand-text"><span class="brand-name">IMROVICH</span><span class="brand-suffix">UI Kit</span><span class="badge-version">v1.0</span></span>
+    </a>
+    <nav class="top-nav">
+      <a class="top-nav-link" href="#colors">Цвета</a>
+      <a class="top-nav-link" href="#buttons">Кнопки</a>
+      <a class="top-nav-link" href="#cards">Карточки</a>
+      <a class="top-nav-link" href="#inputs">Формы</a>
+      <a class="top-nav-link" href="#badges">Бейджи</a>
+      <a class="top-nav-link" href="#misc">Ещё</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="top">
+
+<section class="hero">
+  <span class="eyebrow">Glassmorphism · Open Source · MIT</span>
+  <h1>Компоненты для <span class="accent">твоих</span> проектов</h1>
+  <p class="hero-sub">12 тем, ноль зависимостей. Копируй, вставляй, меняй цвета в один клик. Сделано на вайбе.</p>
+  <div class="hero-actions">
+    <a class="btn btn-primary" href="https://github.com/IMROVICH/imrovich-ui-kit">⭐ Поставить звезду</a>
+    <a class="btn btn-ghost" href="https://github.com/IMROVICH/imrovich-ui-kit/releases">📥 Скачать</a>
+  </div>
+</section>
+
+<section class="section" id="colors">
+  <div class="section-head">
+    <p class="section-kicker">Палитра</p>
+    <h2 class="section-title">Цвета и переменные</h2>
+    <p class="section-sub">Вся тема управляется через CSS-переменные.</p>
+  </div>
+  <div class="comp-card">
+    <div class="comp-title"><span class="dot"></span>Palette · Gold</div>
+    <div class="comp-preview col" style="border:none;padding:0">
+      <div class="color-grid">
+        <div class="color-swatch sw-gold">--gold<small>#FFD24A</small></div>
+        <div class="color-swatch sw-amber">--amber<small>#E0A800</small></div>
+        <div class="color-swatch sw-text">--text<small>#FFF7E0</small></div>
+        <div class="color-swatch sw-dim">--text-dim<small>#D9C79A</small></div>
+        <div class="color-swatch sw-faint">--text-faint<small>#8A7A55</small></div>
+        <div class="color-swatch sw-danger">--danger<small>#E0684F</small></div>
+        <div class="color-swatch sw-ok">--ok<small>#7FC77F</small></div>
+        <div class="color-swatch sw-bg">--bg-deep<small>#0a0703</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="buttons">
+  <div class="section-head">
+    <p class="section-kicker">Элементы</p>
+    <h2 class="section-title">Кнопки</h2>
+    <p class="section-sub">Primary, ghost, small, icon. С ripple-эффектом.</p>
+  </div>
+  <div class="comp-grid">
+    <div class="comp-card">
+      <div class="comp-title"><span class="dot"></span>Варианты</div>
+      <div class="comp-preview">
+        <button class="btn btn-primary">Primary</button>
+        <button class="btn btn-ghost">Ghost</button>
+        <button class="btn btn-primary btn-sm">Small</button>
+        <button class="btn btn-ghost btn-sm">Ghost sm</button>
+        <button class="btn btn-primary btn-icon">+</button>
+        <button class="btn btn-primary" disabled>Disabled</button>
+      </div>
+      <button class="comp-code-toggle">Показать код</button>
+      <div class="code-wrap">
+        <button class="copy-code-btn">Копировать</button>
+        <pre><code>&lt;button class="btn btn-primary"&gt;Primary&lt;/button&gt;
+&lt;button class="btn btn-ghost"&gt;Ghost&lt;/button&gt;
+&lt;button class="btn btn-primary btn-sm"&gt;Small&lt;/button&gt;
+&lt;button class="btn btn-ghost btn-icon"&gt;+&lt;/button&gt;</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="cards">
+  <div class="section-head">
+    <p class="section-kicker">Элементы</p>
+    <h2 class="section-title">Карточки</h2>
+    <p class="section-sub">Стекло с мягким свечением.</p>
+  </div>
+  <div class="comp-grid">
+    <div class="comp-card">
+      <div class="comp-title"><span class="dot"></span>Базовая карточка</div>
+      <div class="comp-preview">
+        <div class="demo-card">
+          <h4>Проект</h4>
+          <p>Короткое описание того, что делает этот проект.</p>
+        </div>
+      </div>
+      <button class="comp-code-toggle">Показать код</button>
+      <div class="code-wrap">
+        <button class="copy-code-btn">Копировать</button>
+        <pre><code>&lt;div class="demo-card"&gt;
+  &lt;h4&gt;Проект&lt;/h4&gt;
+  &lt;p&gt;Короткое описание.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="inputs">
+  <div class="section-head">
+    <p class="section-kicker">Элементы</p>
+    <h2 class="section-title">Формы</h2>
+    <p class="section-sub">Поля, textarea, select, тумблеры.</p>
+  </div>
+  <div class="comp-grid">
+    <div class="comp-card">
+      <div class="comp-title"><span class="dot"></span>Поля ввода</div>
+      <div class="comp-preview col">
+        <input class="glass-input" type="text" placeholder="Имя пользователя...">
+        <textarea class="glass-input" placeholder="Опиши проект..."></textarea>
+        <select class="glass-input">
+          <option>Вариант 1</option>
+          <option>Вариант 2</option>
+        </select>
+      </div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-title"><span class="dot"></span>Тумблер</div>
+      <div class="comp-preview col">
+        <label class="toggle">
+          <input type="checkbox" checked>
+          <span class="toggle-slider"></span>
+          <span class="toggle-text">Включено</span>
+        </label>
+        <label class="toggle">
+          <input type="checkbox">
+          <span class="toggle-slider"></span>
+          <span class="toggle-text">Выключено</span>
+        </label>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="badges">
+  <div class="section-head">
+    <p class="section-kicker">Элементы</p>
+    <h2 class="section-title">Бейджи</h2>
+    <p class="section-sub">Статусы, теги, загрузчики.</p>
+  </div>
+  <div class="comp-card">
+    <div class="comp-preview">
+      <span class="badge">Fabric</span>
+      <span class="badge">NeoForge</span>
+      <span class="badge ok">✓ Готово</span>
+      <span class="badge danger">⚠ Ошибка</span>
+      <span class="badge info">ℹ Инфо</span>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="misc">
+  <div class="section-head">
+    <p class="section-kicker">Ещё</p>
+    <h2 class="section-title">И другие элементы</h2>
+    <p class="section-sub">Аватар, табы, прогресс, модалка, тултип, скелетон, таймлайн, FAQ.</p>
+  </div>
+  <div class="comp-grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+    <div class="comp-card">
+      <div class="comp-title"><span class="dot"></span>Аватар</div>
+      <div class="comp-preview" style="justify-content:center">
+        <div class="demo-avatar">IM</div>
+      </div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-title"><span class="dot"></span>Табы</div>
+      <div class="comp-preview">
+        <div class="tabs">
+          <button class="tab active">Моды</button>
+          <button class="tab">Плагины</button>
+          <button class="tab">Датапаки</button>
+        </div>
+      </div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-title"><span class="dot"></span>Прогресс</div>
+      <div class="comp-preview">
+        <div class="progress"><div class="progress-fill"></div></div>
+      </div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-title"><span class="dot"></span>Модалка</div>
+      <div class="comp-preview" style="justify-content:center">
+        <div class="demo-modal">
+          <h4>Подтвердить?</h4>
+          <p>Это действие нельзя отменить.</p>
+          <div class="actions">
+            <button class="btn btn-ghost btn-sm">Отмена</button>
+            <button class="btn btn-primary btn-sm">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-title"><span class="dot"></span>Тултип</div>
+      <div class="comp-preview" style="justify-content:center;padding:40px 14px">
+        <span class="tooltip-host">
+          <button class="btn btn-ghost btn-sm">Наведи меня</button>
+          <span class="tooltip">Подсказка!</span>
+        </span>
+      </div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-title"><span class="dot"></span>Скелетон</div>
+      <div class="comp-preview col" style="gap:6px">
+        <div class="skeleton w-80"></div>
+        <div class="skeleton w-60"></div>
+        <div class="skeleton w-40"></div>
+      </div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-title"><span class="dot"></span>Таймлайн</div>
+      <div class="comp-preview col">
+        <div class="demo-timeline">
+          <div class="demo-tl-item"><h5>2025</h5><p>Начало пути</p></div>
+          <div class="demo-tl-item"><h5>2026</h5><p>Проекты и релизы</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-title"><span class="dot"></span>FAQ</div>
+      <div class="comp-preview col">
+        <details class="demo-faq">
+          <summary>Что это?</summary>
+          <div class="faq-answer">Аккордеон на основе details/summary.</div>
+        </details>
+        <details class="demo-faq">
+          <summary>Как использовать?</summary>
+          <div class="faq-answer">Копируй разметку и вставляй.</div>
+        </details>
+      </div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-title"><span class="dot"></span>Pulse</div>
+      <div class="comp-preview">
+        <span class="demo-pulse"></span>
+        <span style="color:var(--text-dim);font-size:.88rem">Онлайн</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <p>IMROVICH UI Kit v1.0 · MIT © <a href="https://github.com/IMROVICH">IMROVICH</a> · Сделано на вайбе ✨</p>
+</footer>
+
+</main>
+
+<button type="button" class="settings-btn" id="settingsBtn" aria-label="Настройки">⚙️</button>
+<div class="settings-panel hidden" id="settingsPanel">
+  <div class="settings-header">
+    <h3 class="settings-title">⚙️ Тема</h3>
+    <button type="button" class="settings-close" id="settingsClose">×</button>
+  </div>
+  <p class="settings-section-title">Цветовая схема</p>
+  <div class="settings-swatches" id="settingsSwatches"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="ui-kit.js"></script>
+<script>
+// Инициализация кита
+IMRKit.init();
+
+// Хелпер для демо-страницы
+function toast(msg){ IMRKit.toast(msg); }
+
+// Настройки
+const settingsBtn = document.getElementById('settingsBtn');
+const settingsPanel = document.getElementById('settingsPanel');
+const settingsClose = document.getElementById('settingsClose');
+const settingsSwatches = document.getElementById('settingsSwatches');
+
+// Собираем swatches
+const currentTheme = IMRKit.getTheme();
+Object.entries(IMRKit.themes).forEach(([id]) => {
+  const sw = document.createElement('button');
+  sw.type = 'button';
+  sw.className = 'swatch' + (id === currentTheme ? ' active' : '');
+  sw.dataset.theme = id;
+  sw.title = id;
+  sw.addEventListener('click', () => {
+    IMRKit.applyTheme(id);
+    toast('Тема: ' + id);
+  });
+  settingsSwatches.appendChild(sw);
+});
+
+function togglePanel(){
+  const isHidden = settingsPanel.classList.contains('hidden');
+  settingsPanel.classList.toggle('hidden', !isHidden);
+  settingsBtn.classList.toggle('open', isHidden);
+}
+settingsBtn.addEventListener('click', togglePanel);
+settingsClose.addEventListener('click', togglePanel);
+document.addEventListener('click', e => {
+  if(settingsPanel.classList.contains('hidden')) return;
+  if(settingsPanel.contains(e.target) || settingsBtn.contains(e.target)) return;
+  togglePanel();
+});
+
+// Табы
+document.querySelectorAll('.tabs').forEach(tabs => {
+  tabs.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+});
+
+// Раскрытие кода + копирование
+document.querySelectorAll('.comp-code-toggle').forEach(btn => {
+  btn.addEventListener('click', () => {
+    btn.classList.toggle('open');
+    const wrap = btn.nextElementSibling;
+    if(wrap && wrap.classList.contains('code-wrap')) wrap.classList.toggle('open');
+  });
+});
+
+document.querySelectorAll('.copy-code-btn').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    const code = btn.parentElement.querySelector('code');
+    if(!code) return;
+    try {
+      await navigator.clipboard.writeText(code.textContent);
+      btn.textContent = '✓ Скопировано';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Копировать';
+        btn.classList.remove('copied');
+      }, 1800);
+    } catch(e) { toast('Не удалось скопировать'); }
+  });
+});
+
+// Fireflies
+document.querySelectorAll('.firefly-wrap').forEach(w => {
+  const d = 8000 + Math.random() * 12000;
+  const del = Math.random() * 8000;
+  w.style.animation = `flyUp ${d}ms linear ${del}ms infinite`;
+});
+</script>
+</body>
+</html>
