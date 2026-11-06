@@ -1,0 +1,40 @@
+{
+  "name": "imrovich-ui-kit",
+  "version": "1.0.0",
+  "description": "Glassmorphism UI components · 12 themes · zero dependencies",
+  "main": "ui-kit.css",
+  "style": "ui-kit.css",
+  "files": [
+    "ui-kit.css",
+    "ui-kit.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "ui-kit",
+    "css",
+    "glassmorphism",
+    "components",
+    "dark-theme",
+    "themes",
+    "minecraft"
+  ],
+  "author": "IMROVICH <https://github.com/IMROVICH>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/IMROVICH/imrovich-ui-kit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/IMROVICH/imrovich-ui-kit/issues"
+  },
+  "homepage": "https://imrovich.github.io/imrovich-ui-kit/",
+  "scripts": {
+    "dev": "npx serve .",
+    "publish:dry": "npm publish --dry-run",
+    "publish:real": "npm publish --access public"
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}
